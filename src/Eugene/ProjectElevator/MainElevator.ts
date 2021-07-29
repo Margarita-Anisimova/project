@@ -4,9 +4,9 @@ import ButtonsEl from "./ButtonsElelevator";
 import ChoiceGame from "_Main/СhoiceGame";
 
 export default class MainElevator {
-    public elevator:Elevator;
-    public lines:Lines[];
-    public buttonsEl:ButtonsEl[];
+    public elevator: Elevator;
+    public lines: Lines[];
+    public buttonsEl: ButtonsEl[];
     public up: number;
     public choice: ChoiceGame;
 
@@ -25,9 +25,9 @@ export default class MainElevator {
         }
         this.AddTicker();
 
-        let back = new PIXI.Sprite(PIXI.Texture.from("src/_Main/Image/back.png"));
-        back.width = window.app.screen.width/8; 
-        back.height = window.app.screen.height/5; 
+        let back = new PIXI.Sprite(PIXI.Texture.from("./assets/Image/back.png"));
+        back.width = window.app.screen.width / 8;
+        back.height = window.app.screen.height / 5;
         back.x = window.app.screen.width - back.width - 20;
         back.y = 20;
         back.buttonMode = true;
@@ -44,19 +44,19 @@ export default class MainElevator {
         this.choice.Create(this.choice.autor);
     }
 
-    CallElevat (i: number) {
-        this.elevator.AddFloor(this.lines[i].getCoordinatLine(), this.lines[this.lines.length-1].getCoordinatLine(), this.up);
+    CallElevat(i: number) {
+        this.elevator.AddFloor(this.lines[i].getCoordinatLine(), this.lines[this.lines.length - 1].getCoordinatLine(), this.up);
     }
 
     AddTicker() {
-        window.app.ticker.add ((d) => {
+        window.app.ticker.add((d) => {
             this.elevator.movement = !this.elevator.eldoor.open;
 
-            if (this.elevator.movement && this.elevator.floors.length != 0){
+            if (this.elevator.movement && this.elevator.floors.length != 0) {
                 this.up = 1;
-                if(this.elevator.rect.position.y + this.elevator.rect.height - 12 > this.elevator.floors[0])
+                if (this.elevator.rect.position.y + this.elevator.rect.height - 12 > this.elevator.floors[0])
                     this.up = -1;
-                this.elevator.SetPosition(this.elevator.floors[0], d, this.up, this.lines[this.lines.length-1].getCoordinatLine());
+                this.elevator.SetPosition(this.elevator.floors[0], d, this.up, this.lines[this.lines.length - 1].getCoordinatLine());
             }
 
             if (this.elevator.eldoor.open) {

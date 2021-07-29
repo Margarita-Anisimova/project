@@ -8,17 +8,17 @@ import Enemy from "./Enemy";
 import Shot from "./Shot";
 
 export default class Main {
-    public animation:   Spine;
+    public animation: Spine;
     public spineAnim: any;
     public ikCross: any;
-    public buttons: Buttons; 
-    public sh_ht: Shot; 
+    public buttons: Buttons;
+    public sh_ht: Shot;
     public run: any;
     public col_player: Col_Player;
     public bush: Bush[];
     public timer: number;
     public timer_enemy: number;
-    public dead:boolean;
+    public dead: boolean;
     public enemy: Enemy;
     public choice: ChoiceGame;
     constructor(choice: ChoiceGame) {
@@ -48,12 +48,12 @@ export default class Main {
         this.buttons.down.on('pointerdown', this.Down.bind(this));
         this.buttons.shoot.on('pointerdown', this.Shot.bind(this));
         this.buttons.reload.on('pointerdown', this.Reloading.bind(this));
-        
+
         this.sh_ht = new Shot();
         this.col_player = new Col_Player();
 
-        window.setTimeout ( () => {
-            window.app.ticker.add ((d) => {
+        window.setTimeout(() => {
+            window.app.ticker.add((d) => {
                 if (this.sh_ht.count_heart > 0) {
                     this.buttons.AddInteractive();
 
@@ -87,9 +87,9 @@ export default class Main {
             })
         }, 4700);
 
-        let back = new PIXI.Sprite(PIXI.Texture.from("src/_Main/Image/back.png"));
-        back.width = window.app.screen.width/8; 
-        back.height = window.app.screen.height/5; 
+        let back = new PIXI.Sprite(PIXI.Texture.from("./assets/Image/back.png"));
+        back.width = window.app.screen.width / 8;
+        back.height = window.app.screen.height / 5;
         back.x = window.app.screen.width - back.width - 20;
         back.y = 20;
         back.buttonMode = true;
@@ -105,7 +105,7 @@ export default class Main {
         this.enemy.tween.destroy();
         this.bush[0].tween.destroy();
         this.bush[1].tween.destroy();
-        for(let i = 0; i < this.sh_ht.bullets.length; i++){
+        for (let i = 0; i < this.sh_ht.bullets.length; i++) {
             this.sh_ht.bullets[i].tween.destroy();
         }
         this.sh_ht.tween.destroy();
@@ -186,7 +186,7 @@ export default class Main {
         return -1;
     }
 
-    Monster(){
+    Monster() {
         if (this.enemy.count_heart > 0) {
             if (this.timer_enemy >= 1000 && !this.enemy.add_enemy) {
                 this.enemy.AddEnemy();
@@ -196,7 +196,7 @@ export default class Main {
                 this.timer_enemy++;
             }
 
-            if(this.enemy.add_enemy) {
+            if (this.enemy.add_enemy) {
                 this.enemy.tween.update(window.app.ticker.elapsedMS);
                 if (Collision.Collision(this.col_player.col_player, this.enemy.enemy) === 1 && !this.enemy.remove_heart && !this.enemy.death) {
                     this.enemy.remove_heart = true;
@@ -204,17 +204,17 @@ export default class Main {
                 }
             }
 
-            if(this.enemy.add_timer) {
+            if (this.enemy.add_timer) {
                 this.enemy.timer++;
             }
-            
-            if(this.enemy.timer > 1000 && this.enemy.add_timer) {
+
+            if (this.enemy.timer > 1000 && this.enemy.add_timer) {
                 this.enemy.add_timer = false;
                 this.timer_enemy = 0;
                 this.enemy.AddMove();
             }
         }
-        else if (!this.enemy.death){
+        else if (!this.enemy.death) {
             this.timer_enemy = 0;
             this.enemy.Dead();
         }

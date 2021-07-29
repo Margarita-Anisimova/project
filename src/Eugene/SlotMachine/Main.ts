@@ -3,30 +3,30 @@ import AllDraw from "./AllDraw";
 import Buttons from "./Buttons";
 import Tween from "./Tween";
 
-export default class Main{
+export default class Main {
     public function: any[];
-    public start:any; 
+    public start: any;
     public bounce: any;
     public time_move: number;
     public win_line: any;
-    public draw_all:AllDraw;
+    public draw_all: AllDraw;
     public buttons: Buttons;
     public choice: ChoiceGame;
-    constructor (choice: ChoiceGame) {
+    constructor(choice: ChoiceGame) {
         this.function = new Array();
         this.win_line = new Array();
         this.choice = choice;
 
-        this.win_line = [  
-            [[0,1],[1,1],[2,1],[3,1],[4,1]],
-            [[0,2],[1,2],[2,2],[3,2],[4,2]],
-            [[0,3],[1,3],[2,3],[3,3],[4,3]],
-            [[0,1],[1,2],[2,3],[3,2],[4,1]],
-            [[0,3],[1,2],[2,1],[3,2],[4,3]],
-            [[0,2],[1,3],[2,3],[3,3],[4,2]],
-            [[0,2],[1,1],[2,1],[3,1],[4,2]],
-            [[0,1],[1,1],[2,2],[3,3],[4,3]],
-            [[0,3],[1,3],[2,2],[3,1],[4,1]],
+        this.win_line = [
+            [[0, 1], [1, 1], [2, 1], [3, 1], [4, 1]],
+            [[0, 2], [1, 2], [2, 2], [3, 2], [4, 2]],
+            [[0, 3], [1, 3], [2, 3], [3, 3], [4, 3]],
+            [[0, 1], [1, 2], [2, 3], [3, 2], [4, 1]],
+            [[0, 3], [1, 2], [2, 1], [3, 2], [4, 3]],
+            [[0, 2], [1, 3], [2, 3], [3, 3], [4, 2]],
+            [[0, 2], [1, 1], [2, 1], [3, 1], [4, 2]],
+            [[0, 1], [1, 1], [2, 2], [3, 3], [4, 3]],
+            [[0, 3], [1, 3], [2, 2], [3, 1], [4, 1]],
         ];
 
         this.time_move = 100;
@@ -38,7 +38,7 @@ export default class Main{
         this.buttons = new Buttons();
         this.buttons.button_start.on("pointerdown", this.start.bind(this));
 
-        window.app.ticker.add ( () => {
+        window.app.ticker.add(() => {
             if (this.draw_all.tweens.length !== 0) {
                 for (let i = 0; i < 5; i++) {
                     if (this.draw_all.tweens[i].started) this.draw_all.tweens[i].update(window.app.ticker.elapsedMS);
@@ -71,9 +71,9 @@ export default class Main{
 
         window.app.ticker.start();
 
-        let back = new PIXI.Sprite(PIXI.Texture.from("src/_Main/Image/back.png"));
-        back.width = window.app.screen.width/8; 
-        back.height = window.app.screen.height/5; 
+        let back = new PIXI.Sprite(PIXI.Texture.from("./assets/Image/back.png"));
+        back.width = window.app.screen.width / 8;
+        back.height = window.app.screen.height / 5;
         back.x = window.app.screen.width - back.width - 20;
         back.y = 20;
         back.buttonMode = true;
@@ -87,7 +87,7 @@ export default class Main{
         window.app.loader.destroy();
         window.app.stage.removeChildren();
         this.draw_all.tween_draw.destroy();
-        for(let i = 0; i < this.draw_all.tweens.length; i++) {
+        for (let i = 0; i < this.draw_all.tweens.length; i++) {
             this.draw_all.tweens[i].destroy();
         }
         this.draw_all.logo.tween.destroy();
@@ -106,13 +106,13 @@ export default class Main{
                         }
                     }
                 }
-                
+
                 this.draw_all.finish = false;
 
                 for (let i = 0; i < 5; i++) {
                     this.draw_all.tweens[i].clearControllers();
                     this.draw_all.tweens[i].clearControls();
-                    this.draw_all.tweens[i].addControl(this.draw_all.containers[i]).do({y:[this.draw_all.containers[i].y, this.draw_all.containers[i].y + 102]});
+                    this.draw_all.tweens[i].addControl(this.draw_all.containers[i]).do({ y: [this.draw_all.containers[i].y, this.draw_all.containers[i].y + 102] });
                     this.draw_all.tweens[i].start(this.time_move, this.function[i].bind(this, i), 1);
                 }
 
@@ -131,12 +131,12 @@ export default class Main{
         }
 
         for (let i = 0; i < 5; i++) {
-            this.function[i] = (a:number) => {  
-                window.setTimeout ( () => {
+            this.function[i] = (a: number) => {
+                window.setTimeout(() => {
                     for (let j = 3; j > 0; j--) {
-                        this.draw_all.slots[a][j].SetTexture(this.draw_all.slots[a][j-1].GetTexture());
+                        this.draw_all.slots[a][j].SetTexture(this.draw_all.slots[a][j - 1].GetTexture());
                     }
-            
+
                     this.draw_all.slots[a][0].SetTexture(this.draw_all.animations_arrays.textures_slots[Math.floor(Math.random() * 9)]);
 
                     if (!this.draw_all.finish) {
@@ -144,22 +144,22 @@ export default class Main{
                     }
                     else {
                         this.draw_all.containers[a].position.y = this.draw_all.containers[a].position.y - 102;
-                        this.draw_all.tweens[a].do({y:[this.draw_all.containers[a].y, this.draw_all.containers[a].y + 102]}, Tween.BackOut);
+                        this.draw_all.tweens[a].do({ y: [this.draw_all.containers[a].y, this.draw_all.containers[a].y + 102] }, Tween.BackOut);
                         this.draw_all.tweens[a].start(200, this.bounce.bind(this, a), 1);
-                    }  
+                    }
                 }, 1);
             };
         }
 
         this.bounce = (a: number) => {
             for (let j = 3; j > 0; j--) {
-                this.draw_all.slots[a][j].SetTexture(this.draw_all.slots[a][j-1].GetTexture());
+                this.draw_all.slots[a][j].SetTexture(this.draw_all.slots[a][j - 1].GetTexture());
             }
-    
+
             this.draw_all.slots[a][0].SetTexture(this.draw_all.animations_arrays.textures_slots[Math.floor(Math.random() * 9)]);
             this.draw_all.containers[a].position.y = this.draw_all.containers[a].position.y - 102;
 
-            if(a === 4) {
+            if (a === 4) {
                 this.draw_all.DrawBoxAndLines(this.win_line);
             }
         }

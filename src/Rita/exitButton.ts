@@ -9,7 +9,7 @@ export default class Lift {
     constructor(choiceGame: СhoiceGame, game: any) {
         this.choiceGame = choiceGame;
         this.game = game
-        this.exit = new PIXI.Sprite(PIXI.Texture.from("src/_Main/Image/back.png"));
+        this.exit = new PIXI.Sprite(PIXI.Texture.from("./assets/Image/back.png"));
         this.exit.width = 100;
         this.exit.height = 100;
         this.exit.x = window.app.screen.width - 100;
